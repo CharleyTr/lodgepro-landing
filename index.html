@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LodgePro — De la réservation à la déclaration fiscale, tout en un clic</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1F3A;
+    --blue: #1565C0;
+    --sky: #4A9EDB;
+    --gold: #F0B429;
+    --cream: #FDF8F0;
+    --white: #FFFFFF;
+    --grey: #6B7280;
+    --light: #F4F7FF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 60px;
+    background: rgba(11,31,58,0.95);
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700; color: var(--white);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--gold); }
+  nav a {
+    color: rgba(255,255,255,0.75); text-decoration: none;
+    font-size: 14px; font-weight: 500; margin-left: 32px;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--gold); color: var(--navy) !important;
+    padding: 10px 22px; border-radius: 6px; font-weight: 600 !important;
+    margin-left: 32px !important;
+  }
+  .nav-cta:hover { background: #F5C24A !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding: 120px 60px 80px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(74,158,219,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -100px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(240,180,41,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-content {
+    max-width: 620px; position: relative; z-index: 2;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(240,180,41,0.15); border: 1px solid rgba(240,180,41,0.3);
+    color: var(--gold); padding: 6px 16px; border-radius: 20px;
+    font-size: 13px; font-weight: 500; margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 5vw, 68px);
+    font-weight: 900; line-height: 1.1;
+    color: var(--white); margin-bottom: 24px;
+  }
+  .hero h1 em { color: var(--gold); font-style: normal; }
+  .hero p {
+    font-size: 18px; line-height: 1.7;
+    color: rgba(255,255,255,0.7); margin-bottom: 40px;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: var(--navy);
+    padding: 16px 32px; border-radius: 8px;
+    font-size: 16px; font-weight: 600; text-decoration: none;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { background: #F5C24A; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,180,41,0.3); }
+  .btn-secondary {
+    border: 1px solid rgba(255,255,255,0.3); color: var(--white);
+    padding: 16px 32px; border-radius: 8px;
+    font-size: 16px; font-weight: 500; text-decoration: none;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.05); }
+
+  .hero-visual {
+    position: absolute; right: 60px; top: 50%;
+    transform: translateY(-50%);
+    width: 520px;
+    animation: fadeLeft 1s ease 0.3s both;
+  }
+  .dashboard-mockup {
+    background: #111D2E;
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .mockup-bar {
+    background: #0B1525; padding: 12px 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mockup-title {
+    color: rgba(255,255,255,0.4); font-size: 12px; margin-left: 8px;
+  }
+  .mockup-content { padding: 20px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi-card {
+    background: #1A2840; border-radius: 10px; padding: 14px;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .kpi-label { font-size: 10px; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .kpi-value { font-size: 18px; font-weight: 700; color: var(--white); }
+  .kpi-delta { font-size: 10px; color: #4CAF50; margin-top: 2px; }
+  .chart-placeholder {
+    background: #1A2840; border-radius: 10px; height: 120px;
+    border: 1px solid rgba(255,255,255,0.04);
+    display: flex; align-items: flex-end; padding: 12px; gap: 6px;
+    margin-bottom: 12px;
+  }
+  .bar { background: var(--sky); border-radius: 3px 3px 0 0; flex: 1; opacity: 0.8; }
+  .bar.gold { background: var(--gold); }
+  .resa-list { display: flex; flex-direction: column; gap: 6px; }
+  .resa-item {
+    background: #1A2840; border-radius: 8px; padding: 10px 12px;
+    display: flex; align-items: center; gap: 10px;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .resa-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .resa-name { font-size: 12px; color: rgba(255,255,255,0.8); flex: 1; }
+  .resa-price { font-size: 12px; color: var(--gold); font-weight: 600; }
+
+  /* STATS */
+  .stats {
+    background: var(--gold);
+    padding: 60px;
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 40px;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px; font-weight: 900; color: var(--navy);
+    line-height: 1;
+  }
+  .stat-label { font-size: 14px; color: rgba(11,31,58,0.7); margin-top: 8px; font-weight: 500; }
+
+  /* FEATURES */
+  .features {
+    padding: 100px 60px;
+    background: var(--cream);
+  }
+  .section-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--sky); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 48px); font-weight: 700;
+    color: var(--navy); margin-bottom: 16px; line-height: 1.2;
+  }
+  .section-sub {
+    font-size: 18px; color: var(--grey); max-width: 540px;
+    line-height: 1.7; font-weight: 300;
+  }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 32px; margin-top: 64px;
+  }
+  .feature-card {
+    background: var(--white); border-radius: 16px;
+    padding: 32px; border: 1px solid rgba(11,31,58,0.06);
+    transition: all 0.3s;
+  }
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(11,31,58,0.1);
+    border-color: rgba(74,158,219,0.2);
+  }
+  .feature-icon {
+    font-size: 36px; margin-bottom: 20px; display: block;
+  }
+  .feature-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700; color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .feature-desc { font-size: 15px; color: var(--grey); line-height: 1.6; }
+  .feature-list { list-style: none; margin-top: 16px; }
+  .feature-list li {
+    font-size: 13px; color: var(--navy); padding: 4px 0;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .feature-list li::before { content: "✓"; color: var(--sky); font-weight: 700; }
+
+  /* PRICING */
+  .pricing {
+    background: var(--navy); padding: 100px 60px;
+  }
+  .pricing .section-title { color: var(--white); }
+  .pricing .section-sub { color: rgba(255,255,255,0.6); }
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 24px; margin-top: 64px; max-width: 960px;
+  }
+  .pricing-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; padding: 40px; position: relative;
+    transition: all 0.3s;
+  }
+  .pricing-card:hover { border-color: rgba(255,255,255,0.2); }
+  .pricing-card.featured {
+    background: var(--blue);
+    border-color: var(--sky);
+    transform: scale(1.04);
+  }
+  .pricing-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: var(--navy);
+    font-size: 11px; font-weight: 700; padding: 4px 14px;
+    border-radius: 20px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .pricing-name {
+    font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.6);
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;
+  }
+  .pricing-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px; font-weight: 900; color: var(--white);
+    line-height: 1;
+  }
+  .pricing-price span { font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.5); }
+  .pricing-desc { font-size: 14px; color: rgba(255,255,255,0.5); margin: 12px 0 28px; }
+  .pricing-features { list-style: none; margin-bottom: 32px; }
+  .pricing-features li {
+    font-size: 14px; color: rgba(255,255,255,0.8);
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .pricing-features li span { color: var(--gold); font-weight: 700; }
+  .btn-pricing {
+    display: block; text-align: center; padding: 14px;
+    border-radius: 8px; font-weight: 600; font-size: 15px;
+    text-decoration: none; transition: all 0.2s;
+    border: 1px solid rgba(255,255,255,0.2); color: var(--white);
+  }
+  .btn-pricing:hover { background: rgba(255,255,255,0.1); }
+  .featured .btn-pricing {
+    background: var(--gold); color: var(--navy); border-color: var(--gold);
+  }
+  .featured .btn-pricing:hover { background: #F5C24A; }
+
+  /* TESTIMONIALS */
+  .testimonials { padding: 100px 60px; background: var(--light); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 64px; }
+  .testimonial-card {
+    background: var(--white); border-radius: 16px; padding: 32px;
+    border: 1px solid rgba(11,31,58,0.06);
+  }
+  .stars { color: var(--gold); font-size: 18px; margin-bottom: 16px; }
+  .testimonial-text { font-size: 15px; color: var(--navy); line-height: 1.7; font-style: italic; margin-bottom: 20px; }
+  .testimonial-author { display: flex; align-items: center; gap: 12px; }
+  .author-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--blue); display: flex; align-items: center;
+    justify-content: center; font-size: 18px; color: white;
+    font-family: 'Playfair Display', serif; font-weight: 700;
+  }
+  .author-name { font-weight: 600; font-size: 14px; color: var(--navy); }
+  .author-loc { font-size: 12px; color: var(--grey); }
+
+  /* CTA */
+  .cta-section {
+    background: var(--navy); padding: 100px 60px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 800px; height: 400px;
+    background: radial-gradient(ellipse, rgba(74,158,219,0.12) 0%, transparent 70%);
+  }
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 52px); font-weight: 900;
+    color: var(--white); margin-bottom: 16px; position: relative;
+  }
+  .cta-section h2 em { color: var(--gold); font-style: normal; }
+  .cta-section p {
+    font-size: 18px; color: rgba(255,255,255,0.6);
+    margin-bottom: 40px; position: relative;
+  }
+  .email-form {
+    display: flex; gap: 12px; max-width: 480px; margin: 0 auto;
+    position: relative;
+  }
+  .email-form input {
+    flex: 1; padding: 16px 20px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08);
+    color: var(--white); font-size: 15px; font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+  .email-form input::placeholder { color: rgba(255,255,255,0.35); }
+  .email-form input:focus { border-color: var(--sky); }
+  .email-form button {
+    background: var(--gold); color: var(--navy);
+    padding: 16px 28px; border-radius: 8px; border: none;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .email-form button:hover { background: #F5C24A; transform: translateY(-1px); }
+  .cta-note { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 16px; position: relative; }
+
+  /* FOOTER */
+  footer {
+    background: #060E1B; padding: 40px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700; color: var(--white);
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-text { font-size: 13px; color: rgba(255,255,255,0.3); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeLeft {
+    from { opacity: 0; transform: translate(30px, -50%); }
+    to   { opacity: 1; transform: translate(0, -50%); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .hero-visual { display: none; }
+    .features-grid, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr 1fr; }
+    .stats { grid-template-columns: repeat(2,1fr); }
+    .pricing-card.featured { transform: none; }
+  }
+  @media (max-width: 700px) {
+    nav { padding: 16px 24px; }
+    nav a:not(.nav-cta) { display: none; }
+    .hero, .features, .pricing, .testimonials, .cta-section { padding: 80px 24px; }
+    .stats { padding: 40px 24px; grid-template-columns: repeat(2,1fr); gap: 24px; }
+    .features-grid, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    .email-form { flex-direction: column; }
+    footer { flex-direction: column; gap: 12px; text-align: center; padding: 30px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Lodge<span>Pro</span></div>
+  <div>
+    <a href="#fonctionnalites">Fonctionnalités</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#demo">Démo</a>
+    <a href="#contact" class="nav-cta">Essai gratuit</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🏖️ Nouveau — Gestion locative intelligente</div>
+    <h1>De la réservation à la <em>déclaration fiscale</em>, tout en un clic</h1>
+    <p>LodgePro centralise toute la gestion de vos locations saisonnières. Réservations, finances, messages clients, calendrier, fiscal LMNP — tout en une seule application.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">🚀 Commencer gratuitement</a>
+      <a href="#demo" class="btn-secondary">▶ Voir la démo</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="dashboard-mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#FF5F56"></div>
+        <div class="mockup-dot" style="background:#FFBD2E"></div>
+        <div class="mockup-dot" style="background:#27C93F"></div>
+        <span class="mockup-title">LodgePro — Dashboard</span>
+      </div>
+      <div class="mockup-content">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">CA Net</div>
+            <div class="kpi-value">24 850€</div>
+            <div class="kpi-delta">↑ +12% vs N-1</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Taux occ.</div>
+            <div class="kpi-value">78%</div>
+            <div class="kpi-delta">↑ +5pts</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Nuitées</div>
+            <div class="kpi-value">284</div>
+            <div class="kpi-delta">↑ +18 nuits</div>
+          </div>
+        </div>
+        <div class="chart-placeholder">
+          <div class="bar" style="height:45%"></div>
+          <div class="bar" style="height:60%"></div>
+          <div class="bar gold" style="height:80%"></div>
+          <div class="bar" style="height:55%"></div>
+          <div class="bar" style="height:70%"></div>
+          <div class="bar gold" style="height:95%"></div>
+          <div class="bar" style="height:65%"></div>
+          <div class="bar" style="height:50%"></div>
+          <div class="bar gold" style="height:88%"></div>
+          <div class="bar" style="height:40%"></div>
+          <div class="bar" style="height:30%"></div>
+          <div class="bar" style="height:25%"></div>
+        </div>
+        <div class="resa-list">
+          <div class="resa-item">
+            <div class="resa-dot" style="background:#E53935"></div>
+            <div class="resa-name">Garcia Martinez · Airbnb · 26/04 → 02/05</div>
+            <div class="resa-price">840€</div>
+          </div>
+          <div class="resa-item">
+            <div class="resa-dot" style="background:#1565C0"></div>
+            <div class="resa-name">Van der Berg · Booking · 03/05 → 10/05</div>
+            <div class="resa-price">1 120€</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stat-item">
+    <div class="stat-num">1,2M</div>
+    <div class="stat-label">propriétaires en France</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">37</div>
+    <div class="stat-label">fonctionnalités intégrées</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">3h</div>
+    <div class="stat-label">économisées par semaine</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">100%</div>
+    <div class="stat-label">données sécurisées</div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="fonctionnalites">
+  <div class="section-label">Fonctionnalités</div>
+  <div class="section-title">Tout ce dont vous avez besoin,<br>rien de superflu</div>
+  <div class="section-sub">LodgePro a été conçu par un propriétaire, pour les propriétaires. Chaque fonctionnalité résout un vrai problème du quotidien.</div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">📊</span>
+      <div class="feature-title">Tableau de bord</div>
+      <div class="feature-desc">Tous vos indicateurs clés en un coup d'œil. CA, taux d'occupation, nuitées, commissions.</div>
+      <ul class="feature-list">
+        <li>9 KPIs en temps réel</li>
+        <li>Comparaison N vs N-1</li>
+        <li>Alerte arrivées du lendemain</li>
+      </ul>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📅</span>
+      <div class="feature-title">Calendrier intelligent</div>
+      <div class="feature-desc">Visualisez toutes vos réservations. Vue mois, semaine, Gantt. Détection automatique des conflits.</div>
+      <ul class="feature-list">
+        <li>Import Airbnb & Booking</li>
+        <li>Blocage de dates en 1 clic</li>
+        <li>Événements locaux intégrés</li>
+      </ul>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💬</span>
+      <div class="feature-title">Messages & Communication</div>
+      <div class="feature-desc">Envoyez WhatsApp, SMS et emails depuis l'app avec vos modèles personnalisés.</div>
+      <ul class="feature-list">
+        <li>Traduction automatique IA</li>
+        <li>Templates personnalisables</li>
+        <li>SMS natif depuis votre numéro</li>
+      </ul>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💶</span>
+      <div class="feature-title">Pricing dynamique</div>
+      <div class="feature-desc">Optimisez vos tarifs grâce à l'analyse IA de votre historique et des prix concurrents.</div>
+      <ul class="feature-list">
+        <li>Benchmark concurrents mensuel</li>
+        <li>Tarif suggéré par mois</li>
+        <li>Simulation de CA théorique</li>
+      </ul>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🏛️</span>
+      <div class="feature-title">Fiscal LMNP complet</div>
+      <div class="feature-desc">Votre déclaration fiscale simplifiée. Micro-BIC, régime réel, amortissements, liasse 2033.</div>
+      <ul class="feature-list">
+        <li>Comparaison Micro-BIC vs Réel</li>
+        <li>Plan d'amortissement par composant</li>
+        <li>Export PDF pour votre comptable</li>
+      </ul>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🤖</span>
+      <div class="feature-title">Intelligence Artificielle</div>
+      <div class="feature-desc">Claude AI intégré pour traduire vos messages, analyser vos performances et conseiller vos tarifs.</div>
+      <ul class="feature-list">
+        <li>Traduction en 50+ langues</li>
+        <li>Analyse pricing personnalisée</li>
+        <li>Recommandations saisonnières</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="tarifs">
+  <div class="section-label" style="color:var(--sky)">Tarifs</div>
+  <div class="section-title">Simple, transparent, sans surprise</div>
+  <div class="section-sub">Commencez gratuitement. Évoluez selon vos besoins. Résiliez à tout moment.</div>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-name">Starter</div>
+      <div class="pricing-price">19<span>€/mois</span></div>
+      <div class="pricing-desc">Idéal pour démarrer avec 1 logement</div>
+      <ul class="pricing-features">
+        <li><span>✓</span> 1 propriété</li>
+        <li><span>✓</span> Calendrier & réservations</li>
+        <li><span>✓</span> Messages WhatsApp/SMS</li>
+        <li><span>✓</span> Dashboard & KPIs</li>
+        <li><span>✓</span> Export comptable</li>
+      </ul>
+      <a href="#contact" class="btn-pricing">Commencer</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-badge">⭐ POPULAIRE</div>
+      <div class="pricing-name">Pro</div>
+      <div class="pricing-price">39<span>€/mois</span></div>
+      <div class="pricing-desc">Pour les propriétaires actifs multi-logements</div>
+      <ul class="pricing-features">
+        <li><span>✓</span> Jusqu'à 5 propriétés</li>
+        <li><span>✓</span> Tout Starter +</li>
+        <li><span>✓</span> Analyses avancées N vs N-1</li>
+        <li><span>✓</span> Fiscal LMNP complet</li>
+        <li><span>✓</span> Pricing IA & benchmark</li>
+        <li><span>✓</span> Traduction automatique IA</li>
+      </ul>
+      <a href="#contact" class="btn-pricing">Commencer</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-name">Business</div>
+      <div class="pricing-price">79<span>€/mois</span></div>
+      <div class="pricing-desc">Pour les gestionnaires et agences</div>
+      <ul class="pricing-features">
+        <li><span>✓</span> Propriétés illimitées</li>
+        <li><span>✓</span> Tout Pro +</li>
+        <li><span>✓</span> Multi-utilisateurs</li>
+        <li><span>✓</span> Chat interne équipe</li>
+        <li><span>✓</span> Support prioritaire</li>
+        <li><span>✓</span> Onboarding personnalisé</li>
+      </ul>
+      <a href="#contact" class="btn-pricing">Contacter</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="demo">
+  <div class="section-label">Témoignages</div>
+  <div class="section-title">Ils gèrent leurs locations avec LodgePro</div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-text">"Avant LodgePro je passais 2h par semaine sur des tableaux Excel. Maintenant tout est automatique — les messages, les calculs fiscaux, même les suggestions de prix."</div>
+      <div class="testimonial-author">
+        <div class="author-avatar">M</div>
+        <div>
+          <div class="author-name">Marie L.</div>
+          <div class="author-loc">3 appartements · Bordeaux</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-text">"La traduction automatique des messages est bluffante. Mes clients hollandais et espagnols reçoivent leurs confirmations dans leur langue en 1 clic."</div>
+      <div class="testimonial-author">
+        <div class="author-avatar">P</div>
+        <div>
+          <div class="author-name">Pierre D.</div>
+          <div class="author-loc">2 villas · Nice</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-text">"Le module fiscal LMNP m'a économisé 800€ chez mon comptable. Tout est calculé automatiquement, je n'ai plus qu'à signer."</div>
+      <div class="testimonial-author">
+        <div class="author-avatar">S</div>
+        <div>
+          <div class="author-name">Sophie R.</div>
+          <div class="author-loc">5 logements · Lyon</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2>Prêt à gérer vos locations<br>comme un <em>pro</em> ?</h2>
+  <p>Rejoignez la liste d'attente et obtenez 3 mois offerts au lancement.</p>
+  <div class="email-form">
+    <input type="email" placeholder="votre@email.fr" id="email-input">
+    <button onclick="handleSubmit()">Je m'inscris →</button>
+  </div>
+  <div class="cta-note" id="cta-msg">Sans engagement · Accès early-bird · 3 mois offerts</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Lodge<span>Pro</span></div>
+  <div class="footer-text">© 2026 LodgePro · Développé par Charley Trigano · Tous droits réservés</div>
+</footer>
+
+<script>
+function handleSubmit() {
+  const email = document.getElementById('email-input').value;
+  const msg = document.getElementById('cta-msg');
+  if (!email || !email.includes('@')) {
+    msg.textContent = '⚠️ Veuillez entrer une adresse email valide.';
+    msg.style.color = '#F0B429';
+    return;
+  }
+  msg.textContent = '✅ Merci ! Vous serez parmi les premiers à accéder à LodgePro.';
+  msg.style.color = '#4CAF50';
+  document.getElementById('email-input').value = '';
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Animate on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feature-card, .pricing-card, .testimonial-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
