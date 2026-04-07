@@ -654,11 +654,15 @@
 <section class="cta-section" id="contact">
   <h2>Prêt à gérer vos locations<br>comme un <em>pro</em> ?</h2>
   <p>Rejoignez la liste d'attente et obtenez 3 mois offerts au lancement.</p>
-  <div class="email-form">
-    <input type="email" placeholder="votre@email.fr" id="email-input">
-    <button onclick="handleSubmit()">Je m'inscris →</button>
-  </div>
-  <div class="cta-note" id="cta-msg">Sans engagement · Accès early-bird · 3 mois offerts</div>
+  <form name="lodgepro-waitlist" method="POST" data-netlify="true"
+        netlify-honeypot="bot-field" class="email-form"
+        action="/merci.html">
+    <input type="hidden" name="form-name" value="lodgepro-waitlist">
+    <input type="hidden" name="bot-field" style="display:none">
+    <input type="email" name="email" placeholder="votre@email.fr" required>
+    <button type="submit">Je m'inscris →</button>
+  </form>
+  <div class="cta-note">Sans engagement · Accès early-bird · 3 mois offerts</div>
 </section>
 
 <!-- FOOTER -->
@@ -668,18 +672,7 @@
 </footer>
 
 <script>
-function handleSubmit() {
-  const email = document.getElementById('email-input').value;
-  const msg = document.getElementById('cta-msg');
-  if (!email || !email.includes('@')) {
-    msg.textContent = '⚠️ Veuillez entrer une adresse email valide.';
-    msg.style.color = '#F0B429';
-    return;
-  }
-  msg.textContent = '✅ Merci ! Vous serez parmi les premiers à accéder à LodgePro.';
-  msg.style.color = '#4CAF50';
-  document.getElementById('email-input').value = '';
-}
+// Formulaire géré par Netlify Forms
 
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a => {
