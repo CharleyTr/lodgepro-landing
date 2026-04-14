@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LodgePro Pro — La solution complète pour les conciergeries</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1F3A;
+    --blue: #1565C0;
+    --sky: #4A9EDB;
+    --gold: #F0B429;
+    --cream: #FDF8F0;
+    --white: #FFFFFF;
+    --grey: #6B7280;
+    --light: #F4F7FF;
+    --pro: #7C3AED;
+    --pro-light: #EDE9FE;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--navy); overflow-x:hidden; }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 60px;
+    background:rgba(11,31,58,0.97);
+    backdrop-filter:blur(12px);
+  }
+  .logo { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:white; }
+  .logo span { color:var(--gold); }
+  .logo-pro { 
+    background:var(--pro); color:white; font-size:10px; font-weight:700;
+    padding:2px 8px; border-radius:4px; margin-left:8px;
+    letter-spacing:1px; vertical-align:middle;
+  }
+  nav a { color:rgba(255,255,255,0.75); text-decoration:none; font-size:14px; margin-left:28px; }
+  nav a:hover { color:white; }
+  .nav-cta {
+    background:var(--pro); color:white !important;
+    padding:10px 22px; border-radius:6px; font-weight:600 !important;
+    margin-left:28px !important;
+  }
+
+  /* HERO */
+  .hero {
+    min-height:100vh; background:var(--navy);
+    display:flex; align-items:center;
+    padding:120px 60px 80px; position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; top:-100px; right:-100px;
+    width:600px; height:600px;
+    background:radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%);
+    border-radius:50%;
+  }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(124,58,237,0.2); border:1px solid rgba(124,58,237,0.4);
+    color:#A78BFA; padding:6px 16px; border-radius:20px;
+    font-size:13px; font-weight:500; margin-bottom:28px;
+  }
+  .hero h1 {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(38px,5vw,62px); font-weight:900; line-height:1.1;
+    color:white; margin-bottom:24px; max-width:700px;
+  }
+  .hero h1 em { color:var(--gold); font-style:normal; }
+  .hero p {
+    font-size:18px; line-height:1.7; color:rgba(255,255,255,0.7);
+    margin-bottom:40px; max-width:600px; font-weight:300;
+  }
+  .hero-btns { display:flex; gap:16px; flex-wrap:wrap; }
+  .btn-pro {
+    background:var(--pro); color:white;
+    padding:16px 32px; border-radius:8px; font-size:16px; font-weight:600;
+    text-decoration:none; transition:all 0.2s;
+  }
+  .btn-pro:hover { background:#6D28D9; transform:translateY(-2px); box-shadow:0 8px 24px rgba(124,58,237,0.4); }
+  .btn-outline {
+    border:1px solid rgba(255,255,255,0.3); color:white;
+    padding:16px 32px; border-radius:8px; font-size:16px;
+    text-decoration:none; transition:all 0.2s;
+  }
+  .btn-outline:hover { border-color:rgba(255,255,255,0.6); background:rgba(255,255,255,0.05); }
+
+  /* STATS */
+  .stats {
+    background:var(--pro); padding:50px 60px;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:32px;
+  }
+  .stat-item { text-align:center; }
+  .stat-num { font-family:'Playfair Display',serif; font-size:42px; font-weight:900; color:white; }
+  .stat-label { font-size:13px; color:rgba(255,255,255,0.7); margin-top:6px; }
+
+  /* FEATURES */
+  .features { padding:90px 60px; background:var(--cream); }
+  .section-label { font-size:12px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--pro); margin-bottom:16px; }
+  .section-title { font-family:'Playfair Display',serif; font-size:clamp(30px,4vw,44px); font-weight:700; color:var(--navy); margin-bottom:16px; line-height:1.2; }
+  .section-sub { font-size:17px; color:var(--grey); max-width:540px; line-height:1.7; font-weight:300; margin-bottom:56px; }
+  .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  .feature-card {
+    background:white; border-radius:16px; padding:28px;
+    border:1px solid rgba(11,31,58,0.06); transition:all 0.3s;
+    border-top:3px solid var(--pro);
+  }
+  .feature-card:hover { transform:translateY(-4px); box-shadow:0 16px 32px rgba(124,58,237,0.1); }
+  .feature-icon { font-size:32px; margin-bottom:16px; display:block; }
+  .feature-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--navy); margin-bottom:10px; }
+  .feature-desc { font-size:14px; color:var(--grey); line-height:1.6; }
+  .feature-list { list-style:none; margin-top:14px; }
+  .feature-list li { font-size:13px; color:var(--navy); padding:3px 0; display:flex; align-items:center; gap:6px; }
+  .feature-list li::before { content:"✓"; color:var(--pro); font-weight:700; }
+
+  /* VS TABLE */
+  .vs-section { padding:80px 60px; background:var(--navy); }
+  .vs-section .section-title { color:white; }
+  .vs-section .section-sub { color:rgba(255,255,255,0.6); }
+  .vs-table { width:100%; border-collapse:collapse; margin-top:40px; }
+  .vs-table th { padding:16px; font-size:13px; font-weight:600; text-align:center; }
+  .vs-table th:first-child { text-align:left; }
+  .vs-table td { padding:14px 16px; font-size:14px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .vs-table td:first-child { color:rgba(255,255,255,0.8); }
+  .vs-table td:not(:first-child) { text-align:center; color:rgba(255,255,255,0.6); }
+  .vs-table .col-pro { background:rgba(124,58,237,0.15); color:white !important; font-weight:600; }
+  .vs-table .col-pro-h { background:var(--pro); color:white; border-radius:8px 8px 0 0; }
+  .check { color:#4CAF50; font-size:18px; }
+  .cross { color:#EF5350; font-size:18px; }
+
+  /* PRICING */
+  .pricing { padding:90px 60px; background:var(--light); }
+  .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:56px; }
+  .pricing-card {
+    background:white; border-radius:20px; padding:36px; position:relative;
+    border:1px solid rgba(11,31,58,0.06); transition:all 0.3s;
+  }
+  .pricing-card.featured { background:var(--pro); border-color:var(--pro); transform:scale(1.04); }
+  .pricing-badge {
+    position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+    background:var(--gold); color:var(--navy);
+    font-size:11px; font-weight:700; padding:4px 14px;
+    border-radius:20px; letter-spacing:1px; text-transform:uppercase;
+  }
+  .pricing-name { font-size:13px; font-weight:600; color:var(--grey); text-transform:uppercase; letter-spacing:2px; margin-bottom:14px; }
+  .featured .pricing-name { color:rgba(255,255,255,0.7); }
+  .pricing-price { font-family:'Playfair Display',serif; font-size:48px; font-weight:900; color:var(--navy); line-height:1; }
+  .featured .pricing-price { color:white; }
+  .pricing-price span { font-size:16px; font-weight:400; color:var(--grey); }
+  .featured .pricing-price span { color:rgba(255,255,255,0.6); }
+  .pricing-desc { font-size:13px; color:var(--grey); margin:10px 0 24px; }
+  .featured .pricing-desc { color:rgba(255,255,255,0.6); }
+  .pricing-features { list-style:none; margin-bottom:28px; }
+  .pricing-features li { font-size:13px; color:var(--grey); padding:7px 0; border-bottom:1px solid rgba(11,31,58,0.06); display:flex; align-items:center; gap:8px; }
+  .featured .pricing-features li { color:rgba(255,255,255,0.85); border-color:rgba(255,255,255,0.1); }
+  .pricing-features li span { color:var(--pro); font-weight:700; }
+  .featured .pricing-features li span { color:var(--gold); }
+  .btn-pricing {
+    display:block; text-align:center; padding:14px; border-radius:8px;
+    font-weight:600; font-size:14px; text-decoration:none; transition:all 0.2s;
+    background:var(--pro-light); color:var(--pro);
+  }
+  .btn-pricing:hover { background:var(--pro); color:white; }
+  .featured .btn-pricing { background:var(--gold); color:var(--navy); }
+  .featured .btn-pricing:hover { background:#F5C24A; }
+
+  /* CTA */
+  .cta-section { background:var(--navy); padding:90px 60px; text-align:center; position:relative; overflow:hidden; }
+  .cta-section::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:700px; height:350px; background:radial-gradient(ellipse, rgba(124,58,237,0.15) 0%, transparent 70%); }
+  .cta-section h2 { font-family:'Playfair Display',serif; font-size:clamp(32px,4vw,48px); font-weight:900; color:white; margin-bottom:16px; position:relative; }
+  .cta-section h2 em { color:var(--gold); font-style:normal; }
+  .cta-section p { font-size:17px; color:rgba(255,255,255,0.6); margin-bottom:36px; position:relative; }
+  .cta-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; position:relative; }
+
+  /* FOOTER */
+  footer { background:#060E1B; padding:36px 60px; display:flex; align-items:center; justify-content:space-between; }
+  .footer-logo { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:white; }
+  .footer-logo span { color:var(--gold); }
+  .footer-text { font-size:12px; color:rgba(255,255,255,0.3); }
+  .footer-links a { color:rgba(255,255,255,0.4); text-decoration:none; font-size:12px; margin-left:20px; }
+  .footer-links a:hover { color:rgba(255,255,255,0.7); }
+
+  /* RESPONSIVE */
+  @media (max-width:1024px) {
+    .features-grid, .pricing-grid { grid-template-columns:1fr 1fr; }
+    .stats { grid-template-columns:repeat(2,1fr); }
+    .pricing-card.featured { transform:none; }
+  }
+  @media (max-width:700px) {
+    nav { padding:14px 20px; }
+    nav a:not(.nav-cta) { display:none; }
+    .hero, .features, .vs-section, .pricing, .cta-section { padding:70px 20px; }
+    .stats { padding:36px 20px; grid-template-columns:repeat(2,1fr); gap:20px; }
+    .features-grid, .pricing-grid { grid-template-columns:1fr; }
+    footer { flex-direction:column; gap:12px; text-align:center; padding:24px 20px; }
+  }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  .hero-content { animation:fadeUp 0.8s ease both; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div>
+    <span class="logo">Lodge<span>Pro</span></span>
+    <span class="logo-pro">PRO</span>
+  </div>
+  <div>
+    <a href="https://lodgepro.eu">Version Particulier</a>
+    <a href="#fonctionnalites">Fonctionnalités</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#contact" class="nav-cta">Demander une démo</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Pour les conciergeries & gestionnaires professionnels</div>
+    <h1>Gérez des dizaines de propriétés comme une <em>machine bien huilée</em></h1>
+    <p>LodgePro Pro est la plateforme tout-en-un pensée pour les conciergeries. Gestion multi-propriétés, suivi RH complet, rapports clients automatiques, et bien plus.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-pro">Demander une démo gratuite</a>
+      <a href="https://lodgepro.eu" class="btn-outline">Version Particulier →</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stat-item">
+    <div class="stat-num">200+</div>
+    <div class="stat-label">propriétés gérables</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">100%</div>
+    <div class="stat-label">données isolées par client</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">3h</div>
+    <div class="stat-label">économisées par semaine</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">24/7</div>
+    <div class="stat-label">rapports automatiques</div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="fonctionnalites">
+  <div class="section-label">Fonctionnalités Pro</div>
+  <div class="section-title">Tout ce qu'une conciergerie<br>professionnelle exige</div>
+  <div class="section-sub">LodgePro Pro va bien au-delà de la gestion basique — c'est une plateforme de pilotage complète pour les professionnels de la conciergerie.</div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🏢</span>
+      <div class="feature-title">Multi-propriétés illimitées</div>
+      <div class="feature-desc">Gérez 10, 50 ou 200 propriétés depuis un seul tableau de bord. Vue consolidée ou par propriété.</div>
+      <ul class="feature-list">
+        <li>Dashboard global toutes propriétés</li>
+        <li>Filtres et groupes de propriétés</li>
+        <li>Rapports comparatifs</li>
+      </ul>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">👥</span>
+      <div class="feature-title">Gestion RH complète</div>
+      <div class="feature-desc">Employés partagés entre propriétés, pointage des heures, ventilation par tâche, récapitulatif mensuel.</div>
+      <ul class="feature-list">
+        <li>Employés multi-propriétés</li>
+        <li>Pointage heures d'arrivée / départ</li>
+        <li>Bulletin de paie PDF automatique</li>
+      </ul>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">📊</span>
+      <div class="feature-title">Rapports propriétaires</div>
+      <div class="feature-desc">Chaque propriétaire reçoit automatiquement son rapport mensuel par email avec CA, nuitées et performances.</div>
+      <ul class="feature-list">
+        <li>Envoi automatique le 1er du mois</li>
+        <li>Comparaison N vs N-1</li>
+        <li>Personnalisable par propriété</li>
+      </ul>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">💬</span>
+      <div class="feature-title">Communication centralisée</div>
+      <div class="feature-desc">Envoyez WhatsApp, SMS et emails à vos clients depuis une seule interface. Traduction IA en 50 langues.</div>
+      <ul class="feature-list">
+        <li>Templates par propriété</li>
+        <li>Traduction automatique IA</li>
+        <li>Chat interne équipe</li>
+      </ul>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">🏛️</span>
+      <div class="feature-title">Fiscal & comptabilité</div>
+      <div class="feature-desc">Déclarations LMNP, export comptable, factures clients. Tout est automatisé pour chaque propriété.</div>
+      <ul class="feature-list">
+        <li>LMNP Micro-BIC et Réel</li>
+        <li>Factures PDF par réservation</li>
+        <li>Export comptable mensuel</li>
+      </ul>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">🤖</span>
+      <div class="feature-title">IA & Automatisation</div>
+      <div class="feature-desc">L'IA optimise vos tarifs, traduit vos messages, analyse vos performances et automatise les tâches répétitives.</div>
+      <ul class="feature-list">
+        <li>Pricing IA par propriété</li>
+        <li>Questionnaires avis automatiques</li>
+        <li>Notifications ménage automatiques</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- VS TABLE -->
+<section class="vs-section">
+  <div class="section-label" style="color:#A78BFA">Comparatif</div>
+  <div class="section-title">Particulier vs Pro</div>
+  <div class="section-sub">Choisissez la solution adaptée à votre activité.</div>
+
+  <table class="vs-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th style="color:rgba(255,255,255,0.6)">Particulier</th>
+        <th class="col-pro-h">LodgePro Pro</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Propriétés gérées</td><td>1 à 5</td><td class="col-pro">Illimitées</td></tr>
+      <tr><td>Utilisateurs</td><td>1</td><td class="col-pro">Illimités</td></tr>
+      <tr><td>Gestion RH employés</td><td class="cross">✗</td><td class="col-pro check">✓</td></tr>
+      <tr><td>Employés multi-propriétés</td><td class="cross">✗</td><td class="col-pro check">✓</td></tr>
+      <tr><td>Rapports propriétaires auto</td><td class="cross">✗</td><td class="col-pro check">✓</td></tr>
+      <tr><td>Dashboard consolidé</td><td class="cross">✗</td><td class="col-pro check">✓</td></tr>
+      <tr><td>Chat interne équipe</td><td class="check">✓</td><td class="col-pro check">✓</td></tr>
+      <tr><td>Calendrier & réservations</td><td class="check">✓</td><td class="col-pro check">✓</td></tr>
+      <tr><td>Messages WhatsApp/SMS/Email</td><td class="check">✓</td><td class="col-pro check">✓</td></tr>
+      <tr><td>Fiscal LMNP</td><td class="check">✓</td><td class="col-pro check">✓</td></tr>
+      <tr><td>Traduction IA</td><td class="check">✓</td><td class="col-pro check">✓</td></tr>
+      <tr><td>Support prioritaire</td><td class="cross">✗</td><td class="col-pro check">✓</td></tr>
+      <tr><td>Onboarding personnalisé</td><td class="cross">✗</td><td class="col-pro check">✓</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="tarifs">
+  <div class="section-label">Tarifs Pro</div>
+  <div class="section-title">Transparent, sans surprise</div>
+  <div class="section-sub">Des formules adaptées à la taille de votre conciergerie. Sans engagement.</div>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-name">Starter Pro</div>
+      <div class="pricing-price">199<span>€/mois</span></div>
+      <div class="pricing-desc">Pour les petites conciergeries (jusqu'à 20 propriétés)</div>
+      <ul class="pricing-features">
+        <li><span>✓</span> Jusqu'à 20 propriétés</li>
+        <li><span>✓</span> 5 utilisateurs</li>
+        <li><span>✓</span> Gestion RH employés</li>
+        <li><span>✓</span> Rapports propriétaires</li>
+        <li><span>✓</span> Dashboard consolidé</li>
+        <li><span>✓</span> Support prioritaire</li>
+      </ul>
+      <a href="#contact" class="btn-pricing">Demander une démo</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-badge">POPULAIRE</div>
+      <div class="pricing-name">Business Pro</div>
+      <div class="pricing-price">399<span>€/mois</span></div>
+      <div class="pricing-desc">Pour les conciergeries en pleine croissance (jusqu'à 100 propriétés)</div>
+      <ul class="pricing-features">
+        <li><span>✓</span> Jusqu'à 100 propriétés</li>
+        <li><span>✓</span> Utilisateurs illimités</li>
+        <li><span>✓</span> Tout Starter Pro +</li>
+        <li><span>✓</span> Employés multi-propriétés</li>
+        <li><span>✓</span> Bulletins de paie PDF</li>
+        <li><span>✓</span> Onboarding personnalisé</li>
+      </ul>
+      <a href="#contact" class="btn-pricing">Demander une démo</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-name">Enterprise</div>
+      <div class="pricing-price" style="font-size:32px;padding-top:8px">Sur mesure</div>
+      <div class="pricing-desc">Pour les grandes conciergeries (100+ propriétés)</div>
+      <ul class="pricing-features">
+        <li><span>✓</span> Propriétés illimitées</li>
+        <li><span>✓</span> Tout Business Pro +</li>
+        <li><span>✓</span> Instance dédiée</li>
+        <li><span>✓</span> Intégrations sur mesure</li>
+        <li><span>✓</span> SLA garanti</li>
+        <li><span>✓</span> Gestionnaire de compte dédié</li>
+      </ul>
+      <a href="#contact" class="btn-pricing">Nous contacter</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2>Prêt à passer au niveau <em>Pro</em> ?</h2>
+  <p>Demandez une démonstration gratuite et personnalisée de 30 minutes.</p>
+  <div class="cta-btns">
+    <a href="mailto:c.trigano@gmail.com?subject=Demande demo LodgePro Pro&body=Bonjour, je souhaite une démonstration de LodgePro Pro. Voici mes informations : Nombre de propriétés : Ville :"
+       class="btn-pro">Demander une démo →</a>
+    <a href="https://lodgepro.eu" class="btn-outline">Version Particulier</a>
+  </div>
+  <p style="margin-top:20px;font-size:12px;color:rgba(255,255,255,0.3)">
+    Réponse sous 24h · Démo en visioconférence · Sans engagement
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <span class="footer-logo">Lodge<span>Pro</span></span>
+    <span style="background:#7C3AED;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;margin-left:6px">PRO</span>
+  </div>
+  <div class="footer-text">© 2026 LodgePro · Développé par Charley Trigano</div>
+  <div class="footer-links">
+    <a href="https://lodgepro.eu">Version Particulier</a>
+    <a href="mailto:c.trigano@gmail.com">Contact</a>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if (!href || href === '#') return;
+    const target = document.querySelector(href);
+    if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, {threshold: 0.1});
+
+document.querySelectorAll('.feature-card, .pricing-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
